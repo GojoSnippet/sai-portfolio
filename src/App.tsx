@@ -1,6 +1,7 @@
 import {
   Navbar,
   Hero,
+  Skills,
   About,
   Experience,
   Projects,
@@ -13,6 +14,7 @@ function App() {
     <div className="relative z-0 bg-slate-900">
       <Navbar />
       <Hero />
+      <Skills />
       <About />
       <Projects />
       <Experience />

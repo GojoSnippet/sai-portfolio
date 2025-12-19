@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Container, Row, Col } from "react-bootstrap";
-import { aboutContent, technologies } from "../constants";
+import { aboutContent } from "../constants";
 
 const About = () => {
   return (
@@ -65,37 +65,6 @@ const About = () => {
             </motion.div>
           </Col>
         </Row>
-
-        {/* Tech Icons Grid */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          viewport={{ once: true }}
-          className="mt-5 pt-5 border-top border-white border-opacity-10"
-        >
-          <Row className="g-3 g-md-4 row-cols-5 row-cols-sm-10">
-            {technologies.map((tech, index) => (
-              <Col key={tech.name}>
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, delay: index * 0.05 }}
-                  viewport={{ once: true }}
-                  whileHover={{ scale: 1.1, y: -4 }}
-                  className="d-flex flex-column align-items-center gap-2 cursor-pointer"
-                >
-                  <div className="tech-icon">
-                    <span>{tech.icon}</span>
-                  </div>
-                  <span className="text-gray-500 small text-center">
-                    {tech.name}
-                  </span>
-                </motion.div>
-              </Col>
-            ))}
-          </Row>
-        </motion.div>
       </Container>
     </section>
   );
