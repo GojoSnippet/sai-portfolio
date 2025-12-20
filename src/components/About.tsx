@@ -1,13 +1,13 @@
 import { motion } from "framer-motion";
 import { Container, Row, Col } from "react-bootstrap";
 import { aboutContent } from "../constants";
-// import AboutCanvas from "./canvas/AboutCanvas";
+import AboutCanvas from "./canvas/AboutCanvas";
 
 const About = () => {
   return (
     <section id="about" className="about-section position-relative overflow-hidden">
-      {/* ZooZoo Canvas - temporarily disabled */}
-      {/* <motion.div
+      {/* ZooZoo Canvas */}
+      <motion.div
         className="about-zoozoo-container"
         initial={{ x: 300, opacity: 0 }}
         whileInView={{ x: 0, opacity: 1 }}
@@ -15,7 +15,7 @@ const About = () => {
         viewport={{ once: true }}
       >
         <AboutCanvas />
-      </motion.div> */}
+      </motion.div>
 
       <Container className="py-5 position-relative" style={{ zIndex: 10 }}>
         {/* Section Header - moves with ZooZoo push */}

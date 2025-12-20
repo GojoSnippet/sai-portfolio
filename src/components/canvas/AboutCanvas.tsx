@@ -1,41 +1,63 @@
-import { useRef, Suspense, useEffect, useMemo } from "react";
-import { Canvas } from "@react-three/fiber";
-import { useGLTF, useAnimations } from "@react-three/drei";
+import { useRef, Suspense, useEffect } from "react";
+import { Canvas, useFrame } from "@react-three/fiber";
+import { useFBX, Center, useTexture } from "@react-three/drei";
 import * as THREE from "three";
 
-// ZooZoo Character - clone the scene to avoid affecting HeroCanvas
+// ZooZoo Character from new FBX with texture
 const ZooZooCharacter = ({ position, scale }: { position: [number, number, number]; scale: number }) => {
   const groupRef = useRef<THREE.Group>(null);
-  const { scene, animations } = useGLTF("/models/character.glb");
-  const { actions } = useAnimations(animations, groupRef);
 
-  // Clone the scene so we don't modify the cached original
-  const clonedScene = useMemo(() => scene.clone(), [scene]);
+  // Load the FBX model
+  const fbx = useFBX("/models/zoozoo-vodafone-better-version (1)/source/ZooZoo Vodafone Better Version.fbx");
+
+  // Load the texture from the textures folder
+  const texture = useTexture("/models/zoozoo-vodafone-better-version (1)/textures/0.jpeg");
 
   useEffect(() => {
-    // Apply white material to the CLONED scene only
-    clonedScene.traverse((child: THREE.Object3D) => {
+    // Configure texture for UV mapping
+    texture.colorSpace = THREE.SRGBColorSpace;
+    texture.flipY = true;
+    texture.needsUpdate = true;
+
+    // Create material with texture (white/gray body, black eyes)
+    const bodyMaterial = new THREE.MeshBasicMaterial({
+      map: texture,
+      side: THREE.DoubleSide,
+    });
+
+    // Apply to all meshes
+    fbx.traverse((child) => {
       if ((child as THREE.Mesh).isMesh) {
         const mesh = child as THREE.Mesh;
-        mesh.material = new THREE.MeshBasicMaterial({
-          color: 0xffffff,
-          side: THREE.DoubleSide,
-        });
+
+        // Remove vertex colors if they exist (they can override material)
+        if (mesh.geometry.attributes.color) {
+          mesh.geometry.deleteAttribute('color');
+        }
+
+        mesh.material = bodyMaterial;
+        mesh.frustumCulled = false;
       }
     });
 
-    // Play animations
-    if (actions && Object.keys(actions).length > 0) {
-      const firstAnimation = Object.values(actions)[0];
-      if (firstAnimation) {
-        firstAnimation.reset().fadeIn(0.5).play();
-      }
+    return () => {
+      bodyMaterial.dispose();
+    };
+  }, [fbx, texture]);
+
+  // Add gentle floating animation
+  useFrame((state) => {
+    if (groupRef.current) {
+      groupRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.5) * 0.15;
+      groupRef.current.position.y = position[1] + Math.sin(state.clock.elapsedTime * 0.8) * 0.05;
     }
-  }, [actions, clonedScene]);
+  });
 
   return (
-    <group ref={groupRef} position={position} scale={scale} rotation={[0, -Math.PI / 2, 0]}>
-      <primitive object={clonedScene} />
+    <group ref={groupRef} position={position} scale={scale}>
+      <Center>
+        <primitive object={fbx} />
+      </Center>
     </group>
   );
 };
@@ -45,8 +67,8 @@ const LoadingPlaceholder = () => {
   return (
     <group position={[0, 0, 0]} scale={1}>
       <mesh>
-        <boxGeometry args={[1, 1, 1]} />
-        <meshBasicMaterial color="#ff0000" />
+        <capsuleGeometry args={[0.3, 0.8, 16, 32]} />
+        <meshStandardMaterial color="#f0f0f0" />
       </mesh>
     </group>
   );
@@ -56,13 +78,9 @@ const LoadingPlaceholder = () => {
 const AboutScene = () => {
   return (
     <>
-      {/* Lighting */}
-      <ambientLight intensity={2} />
-      <directionalLight position={[5, 10, 5]} intensity={1.5} />
-
       {/* ZooZoo Character */}
       <Suspense fallback={<LoadingPlaceholder />}>
-        <ZooZooCharacter position={[0, -1.5, 0]} scale={1.5} />
+        <ZooZooCharacter position={[0, -0.3, 0]} scale={1.3} />
       </Suspense>
     </>
   );
@@ -73,7 +91,7 @@ const AboutCanvas = () => {
   return (
     <div style={{ width: "100%", height: "100%", minHeight: "400px" }}>
       <Canvas
-        camera={{ position: [0, 0, 6], fov: 45 }}
+        camera={{ position: [0, 0.5, 3], fov: 50 }}
         gl={{ antialias: true, alpha: true }}
         style={{ background: "transparent" }}
       >
@@ -82,7 +100,5 @@ const AboutCanvas = () => {
     </div>
   );
 };
-
-useGLTF.preload("/models/character.glb");
 
 export default AboutCanvas;
