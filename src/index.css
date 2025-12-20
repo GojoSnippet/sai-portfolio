@@ -692,49 +692,53 @@ h1, h2, h3, h4, h5, h6 {
   }
 
   .about-push-wrapper {
-    justify-content: flex-start;
-    padding-left: 3%;
+    justify-content: center;
+    padding-left: 0;
   }
 
   .about-content-container {
     flex: 0 0 auto;
     width: 55%;
+    padding-right: 0;
   }
 
   .about-zoozoo-pusher {
-    display: block;
-    width: 400px;
+    display: flex;
+    align-items: center;
+    width: 450px;
     height: 500px;
     flex-shrink: 0;
-    margin-left: -40px;
+    margin-left: -320px;
   }
 }
 
 @media (min-width: 1200px) {
   .about-content-container {
-    width: 50%;
+    width: 52%;
+    padding-right: 0;
   }
 
   .about-zoozoo-pusher {
-    width: 450px;
-    height: 550px;
-    margin-left: -30px;
+    width: 500px;
+    height: 540px;
+    margin-left: -300px;
   }
 }
 
 @media (min-width: 1400px) {
   .about-push-wrapper {
-    padding-left: 5%;
+    justify-content: center;
   }
 
   .about-content-container {
     width: 50%;
+    padding-right: 0;
   }
 
   .about-zoozoo-pusher {
-    width: 500px;
-    height: 600px;
-    margin-left: -20px;
+    width: 550px;
+    height: 580px;
+    margin-left: -280px;
   }
 }
 
