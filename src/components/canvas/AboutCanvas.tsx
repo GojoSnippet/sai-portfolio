@@ -1,19 +1,23 @@
 import { useRef, Suspense, useEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { useFBX, Center, useTexture } from "@react-three/drei";
+import { useFBX, Center, useTexture, OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
 
-// ZooZoo Character from new FBX with texture
+// ZooZoo Character with animation from Push_Stop_fbx.fbx
 const ZooZooCharacter = ({ position, scale }: { position: [number, number, number]; scale: number }) => {
   const groupRef = useRef<THREE.Group>(null);
+  const mixerRef = useRef<THREE.AnimationMixer | null>(null);
 
-  // Load the FBX model
-  const fbx = useFBX("/models/zoozoo-vodafone-better-version (1)/source/ZooZoo Vodafone Better Version.fbx");
+  // Load the rigged FBX model with animation
+  const fbx = useFBX("/models/Push_Stop_fbx.fbx");
 
-  // Load the texture from the textures folder
+  // Load the texture
   const texture = useTexture("/models/zoozoo-vodafone-better-version (1)/textures/0.jpeg");
 
   useEffect(() => {
+    console.log("=== Push_Stop_fbx.fbx Loaded ===");
+    console.log("Animations:", fbx.animations.length);
+
     // Configure texture for UV mapping
     texture.colorSpace = THREE.SRGBColorSpace;
     texture.flipY = true;
@@ -37,24 +41,32 @@ const ZooZooCharacter = ({ position, scale }: { position: [number, number, numbe
 
         mesh.material = bodyMaterial;
         mesh.frustumCulled = false;
+        console.log("Mesh:", mesh.name, "UV:", mesh.geometry.attributes.uv ? "yes" : "no");
       }
     });
+
+    // Set up animation
+    if (fbx.animations.length > 0) {
+      mixerRef.current = new THREE.AnimationMixer(fbx);
+      const action = mixerRef.current.clipAction(fbx.animations[0]);
+      action.play();
+      console.log("Playing animation:", fbx.animations[0].name);
+    }
 
     return () => {
       bodyMaterial.dispose();
     };
   }, [fbx, texture]);
 
-  // Add gentle floating animation
-  useFrame((state) => {
-    if (groupRef.current) {
-      groupRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.5) * 0.15;
-      groupRef.current.position.y = position[1] + Math.sin(state.clock.elapsedTime * 0.8) * 0.05;
+  // Animation loop
+  useFrame((_, delta) => {
+    if (mixerRef.current) {
+      mixerRef.current.update(delta);
     }
   });
 
   return (
-    <group ref={groupRef} position={position} scale={scale}>
+    <group ref={groupRef} position={position} scale={scale} rotation={[0, -Math.PI / 2, 0]}>
       <Center>
         <primitive object={fbx} />
       </Center>
@@ -78,9 +90,9 @@ const LoadingPlaceholder = () => {
 const AboutScene = () => {
   return (
     <>
-      {/* ZooZoo Character */}
+      {/* ZooZoo Character - scale back to 1, let Center handle positioning */}
       <Suspense fallback={<LoadingPlaceholder />}>
-        <ZooZooCharacter position={[0, -0.3, 0]} scale={1.3} />
+        <ZooZooCharacter position={[0, 0, 0]} scale={1} />
       </Suspense>
     </>
   );
@@ -91,10 +103,11 @@ const AboutCanvas = () => {
   return (
     <div style={{ width: "100%", height: "100%", minHeight: "400px" }}>
       <Canvas
-        camera={{ position: [0, 0.5, 3], fov: 50 }}
+        camera={{ position: [0, 100, 300], fov: 50 }}
         gl={{ antialias: true, alpha: true }}
         style={{ background: "transparent" }}
       >
+        <OrbitControls />
         <AboutScene />
       </Canvas>
     </div>
