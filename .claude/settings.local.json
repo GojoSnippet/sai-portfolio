@@ -9,7 +9,9 @@
       "Bash(timeout 10 npm run dev)",
       "Bash(npm run build:*)",
       "Bash(timeout 8 npm run dev:*)",
-      "Bash(timeout 5 npm run dev:*)"
+      "Bash(timeout 5 npm run dev:*)",
+      "Bash(move \"d:\\\\Downloads\\\\sai-portfolio\\\\sai-portfolio\\\\public\\\\models\\\\Push Stop Zoo Zoo.glb\" \"d:\\\\Downloads\\\\sai-portfolio\\\\sai-portfolio\\\\public\\\\models\\\\push-stop-zoozoo.glb\")",
+      "Bash(cmd /c move:*)"
     ]
   }
 }

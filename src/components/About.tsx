@@ -1,16 +1,28 @@
 import { motion } from "framer-motion";
 import { Container, Row, Col } from "react-bootstrap";
 import { aboutContent } from "../constants";
+// import AboutCanvas from "./canvas/AboutCanvas";
 
 const About = () => {
   return (
-    <section id="about" className="py-5 bg-gradient-indigo-slate">
-      <Container className="py-5">
-        {/* Section Header */}
+    <section id="about" className="about-section position-relative overflow-hidden">
+      {/* ZooZoo Canvas - temporarily disabled */}
+      {/* <motion.div
+        className="about-zoozoo-container"
+        initial={{ x: 300, opacity: 0 }}
+        whileInView={{ x: 0, opacity: 1 }}
+        transition={{ duration: 1.2, ease: "easeOut" }}
+        viewport={{ once: true }}
+      >
+        <AboutCanvas />
+      </motion.div> */}
+
+      <Container className="py-5 position-relative" style={{ zIndex: 10 }}>
+        {/* Section Header - moves with ZooZoo push */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+          initial={{ opacity: 0, x: 200 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          transition={{ duration: 1.2, ease: "easeOut" }}
           viewport={{ once: true }}
           className="text-center mb-5"
         >
@@ -21,12 +33,12 @@ const About = () => {
         </motion.div>
 
         <Row className="g-5 align-items-start">
-          {/* Description */}
+          {/* Description - moves with ZooZoo push */}
           <Col lg={6}>
             <motion.div
-              initial={{ opacity: 0, x: -30 }}
+              initial={{ opacity: 0, x: 200 }}
               whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
+              transition={{ duration: 1.2, ease: "easeOut" }}
               viewport={{ once: true }}
             >
               {aboutContent.description.split("\n\n").map((paragraph, index) => (
@@ -37,12 +49,12 @@ const About = () => {
             </motion.div>
           </Col>
 
-          {/* Skills */}
+          {/* Skills - moves with ZooZoo push */}
           <Col lg={6}>
             <motion.div
-              initial={{ opacity: 0, x: 30 }}
+              initial={{ opacity: 0, x: 200 }}
               whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
+              transition={{ duration: 1.2, ease: "easeOut" }}
               viewport={{ once: true }}
             >
               <h3 className="text-white fs-4 fw-semibold mb-4">

@@ -656,6 +656,53 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* =============================================
+   ABOUT SECTION WITH PUSH STOP ZOOZOO
+   ============================================= */
+.about-section {
+  background: linear-gradient(180deg, var(--indigo-600) 0%, var(--slate-900) 100%);
+  padding: 4rem 0;
+  min-height: 600px;
+}
+
+.about-zoozoo-container {
+  display: none;
+}
+
+/* Desktop: show ZooZoo on the right side, pushing content */
+@media (min-width: 992px) {
+  .about-section {
+    padding: 5rem 0;
+  }
+
+  .about-zoozoo-container {
+    display: block;
+    position: absolute;
+    right: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 400px;
+    height: 500px;
+    z-index: 5;
+  }
+}
+
+@media (min-width: 1200px) {
+  .about-zoozoo-container {
+    width: 450px;
+    height: 550px;
+    right: 3%;
+  }
+}
+
+@media (min-width: 1400px) {
+  .about-zoozoo-container {
+    width: 500px;
+    height: 600px;
+    right: 5%;
+  }
+}
+
+/* =============================================
    TECH ICONS
    ============================================= */
 .tech-icon {
