@@ -664,41 +664,77 @@ h1, h2, h3, h4, h5, h6 {
   min-height: 600px;
 }
 
-.about-zoozoo-container {
+/* Wrapper that moves both content and ZooZoo together */
+.about-push-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+}
+
+.about-content-container {
+  position: relative;
+  z-index: 10;
+  flex: 1;
+  max-width: 1200px;
+}
+
+/* ZooZoo pusher - hidden on mobile */
+.about-zoozoo-pusher {
   display: none;
 }
 
-/* Desktop: show ZooZoo on the right side, pushing content */
+/* Desktop: show ZooZoo on the right side, inline with content */
 @media (min-width: 992px) {
   .about-section {
     padding: 5rem 0;
   }
 
-  .about-zoozoo-container {
+  .about-push-wrapper {
+    justify-content: flex-start;
+    padding-left: 3%;
+  }
+
+  .about-content-container {
+    flex: 0 0 auto;
+    width: 55%;
+  }
+
+  .about-zoozoo-pusher {
     display: block;
-    position: absolute;
-    right: 5%;
-    top: 50%;
-    transform: translateY(-50%);
     width: 400px;
     height: 500px;
-    z-index: 5;
+    flex-shrink: 0;
+    margin-left: -40px;
   }
 }
 
 @media (min-width: 1200px) {
-  .about-zoozoo-container {
+  .about-content-container {
+    width: 50%;
+  }
+
+  .about-zoozoo-pusher {
     width: 450px;
     height: 550px;
-    right: 3%;
+    margin-left: -30px;
   }
 }
 
 @media (min-width: 1400px) {
-  .about-zoozoo-container {
+  .about-push-wrapper {
+    padding-left: 5%;
+  }
+
+  .about-content-container {
+    width: 50%;
+  }
+
+  .about-zoozoo-pusher {
     width: 500px;
     height: 600px;
-    right: 5%;
+    margin-left: -20px;
   }
 }
 

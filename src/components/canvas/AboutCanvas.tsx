@@ -1,117 +1,83 @@
 import { useRef, Suspense, useEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { useFBX, Center, useTexture, OrbitControls } from "@react-three/drei";
+import { useFBX, useTexture } from "@react-three/drei";
 import * as THREE from "three";
 
-// ZooZoo Character with animation from Push_Stop_fbx.fbx
-const ZooZooCharacter = ({ position, scale }: { position: [number, number, number]; scale: number }) => {
-  const groupRef = useRef<THREE.Group>(null);
+// ZooZoo Character with animation that plays once
+const ZooZooCharacter = ({ isInView }: { isInView: boolean }) => {
   const mixerRef = useRef<THREE.AnimationMixer | null>(null);
-
-  // Load the rigged FBX model with animation
+  const actionRef = useRef<THREE.AnimationAction | null>(null);
+  const hasPlayedRef = useRef(false);
   const fbx = useFBX("/models/Push_Stop_fbx.fbx");
-
-  // Load the texture
   const texture = useTexture("/models/zoozoo-vodafone-better-version (1)/textures/0.jpeg");
 
   useEffect(() => {
-    console.log("=== Push_Stop_fbx.fbx Loaded ===");
-    console.log("Animations:", fbx.animations.length);
-
-    // Configure texture for UV mapping
     texture.colorSpace = THREE.SRGBColorSpace;
     texture.flipY = true;
     texture.needsUpdate = true;
 
-    // Create material with texture (white/gray body, black eyes)
-    const bodyMaterial = new THREE.MeshBasicMaterial({
-      map: texture,
-      side: THREE.DoubleSide,
-    });
+    const bodyMaterial = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide });
+    const eyeMaterial = new THREE.MeshBasicMaterial({ color: 0x000000 }); // Black eyes
 
-    // Apply to all meshes
     fbx.traverse((child) => {
       if ((child as THREE.Mesh).isMesh) {
         const mesh = child as THREE.Mesh;
-
-        // Remove vertex colors if they exist (they can override material)
-        if (mesh.geometry.attributes.color) {
-          mesh.geometry.deleteAttribute('color');
+        if (mesh.geometry.attributes.color) mesh.geometry.deleteAttribute('color');
+        // Check if this mesh is for eyes (common naming conventions)
+        const name = mesh.name.toLowerCase();
+        if (name.includes('eye') || name.includes('pupil') || name.includes('iris')) {
+          mesh.material = eyeMaterial;
+        } else {
+          mesh.material = bodyMaterial;
         }
-
-        mesh.material = bodyMaterial;
-        mesh.frustumCulled = false;
-        console.log("Mesh:", mesh.name, "UV:", mesh.geometry.attributes.uv ? "yes" : "no");
       }
     });
 
-    // Set up animation
     if (fbx.animations.length > 0) {
       mixerRef.current = new THREE.AnimationMixer(fbx);
-      const action = mixerRef.current.clipAction(fbx.animations[0]);
-      action.play();
-      console.log("Playing animation:", fbx.animations[0].name);
+      actionRef.current = mixerRef.current.clipAction(fbx.animations[0]);
+      actionRef.current.setLoop(THREE.LoopOnce, 1);
+      actionRef.current.clampWhenFinished = true;
     }
 
     return () => {
       bodyMaterial.dispose();
+      eyeMaterial.dispose();
     };
   }, [fbx, texture]);
 
-  // Animation loop
-  useFrame((_, delta) => {
-    if (mixerRef.current) {
-      mixerRef.current.update(delta);
+  // Play animation once when section comes into view
+  useEffect(() => {
+    if (isInView && !hasPlayedRef.current && actionRef.current) {
+      actionRef.current.reset();
+      actionRef.current.play();
+      hasPlayedRef.current = true;
     }
-  });
+  }, [isInView]);
 
-  return (
-    <group ref={groupRef} position={position} scale={scale} rotation={[0, -Math.PI / 2, 0]}>
-      <Center>
-        <primitive object={fbx} />
-      </Center>
-    </group>
-  );
+  useFrame((_, delta) => mixerRef.current?.update(delta));
+
+  return <primitive object={fbx} scale={1} position={[0.3, -1, 0]} rotation={[0, -Math.PI / 2, 0]} />;
 };
 
-// Loading placeholder
-const LoadingPlaceholder = () => {
-  return (
-    <group position={[0, 0, 0]} scale={1}>
-      <mesh>
-        <capsuleGeometry args={[0.3, 0.8, 16, 32]} />
-        <meshStandardMaterial color="#f0f0f0" />
-      </mesh>
-    </group>
-  );
-};
+// Scene wrapper to receive isInView prop
+const AboutScene = ({ isInView }: { isInView: boolean }) => (
+  <Suspense fallback={null}>
+    <ZooZooCharacter isInView={isInView} />
+  </Suspense>
+);
 
-// Scene
-const AboutScene = () => {
-  return (
-    <>
-      {/* ZooZoo Character - scale back to 1, let Center handle positioning */}
-      <Suspense fallback={<LoadingPlaceholder />}>
-        <ZooZooCharacter position={[0, 0, 0]} scale={1} />
-      </Suspense>
-    </>
-  );
-};
+interface AboutCanvasProps {
+  isInView?: boolean;
+}
 
-// Canvas component
-const AboutCanvas = () => {
-  return (
-    <div style={{ width: "100%", height: "100%", minHeight: "400px" }}>
-      <Canvas
-        camera={{ position: [0, 100, 300], fov: 50 }}
-        gl={{ antialias: true, alpha: true }}
-        style={{ background: "transparent" }}
-      >
-        <OrbitControls />
-        <AboutScene />
-      </Canvas>
-    </div>
-  );
-};
+const AboutCanvas = ({ isInView = false }: AboutCanvasProps) => (
+  <div style={{ width: "100%", height: "100%", minHeight: "450px" }}>
+    <Canvas camera={{ position: [0, 0.5, 4], fov: 45 }} gl={{ antialias: true, alpha: true }} style={{ background: "transparent" }}>
+      <ambientLight intensity={1} />
+      <AboutScene isInView={isInView} />
+    </Canvas>
+  </div>
+);
 
 export default AboutCanvas;
