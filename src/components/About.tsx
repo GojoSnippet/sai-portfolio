@@ -10,38 +10,53 @@ const About = () => {
 
   return (
     <section ref={sectionRef} id="about" className="about-section position-relative overflow-hidden">
-      {/* Single animated wrapper - ZooZoo pushes everything from right to center */}
       <motion.div
         className="about-push-wrapper"
         initial={{ x: "100vw" }}
         animate={isInView ? { x: 0 } : { x: "100vw" }}
-        transition={{ duration: 2, ease: "easeOut" }}
+        transition={{ duration: 2, ease: [0.16, 1, 0.3, 1] }}
       >
-        {/* Content Container */}
         <Container className="py-5 about-content-container">
-          {/* Section Header */}
-          <div className="text-center mb-5">
+          <motion.div
+            className="text-center mb-5"
+            initial={{ opacity: 0, y: 30 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+            transition={{ delay: 0.5, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          >
             <h2 className="section-title mb-3">
-              About <span className="text-indigo-300">Me</span>
+              About <span className="text-gradient">Me</span>
             </h2>
             <div className="section-divider" />
-          </div>
+          </motion.div>
 
           <Row className="justify-content-center">
-            {/* Description */}
             <Col lg={10} xl={8}>
               <div>
                 {aboutContent.description.split("\n\n").map((paragraph, index) => (
-                  <p key={index} className="text-gray-300 fs-5 lh-lg mb-4 text-center">
+                  <motion.p
+                    key={index}
+                    className="text-slate-200 mb-4 text-center"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                    transition={{
+                      delay: 0.7 + index * 0.2,
+                      duration: 0.6,
+                      ease: [0.16, 1, 0.3, 1],
+                    }}
+                    style={{
+                      fontSize: "1.15rem",
+                      lineHeight: "1.8",
+                      fontWeight: "400",
+                    }}
+                  >
                     {paragraph.trim()}
-                  </p>
+                  </motion.p>
                 ))}
               </div>
             </Col>
           </Row>
         </Container>
 
-        {/* ZooZoo positioned on the right side, pushing the content */}
         <div className="about-zoozoo-pusher">
           <AboutCanvas isInView={isInView} />
         </div>

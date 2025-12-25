@@ -7,32 +7,42 @@ import HeroCanvas from "./canvas/HeroCanvas";
 const Hero = () => {
   return (
     <section className="hero-section bg-hero-gradient">
-      {/* 3D Canvas - absolute background */}
       <div className="position-absolute top-0 start-0 w-100 h-100 z-0">
         <HeroCanvas />
       </div>
 
-      {/* Content overlay */}
       <div className="position-relative z-10 hero-content-wrapper">
         <Container>
-          <div className="hero-content" style={{ maxWidth: '480px' }}>
-            {/* Greeting chip */}
+          <div className="hero-content" style={{ maxWidth: '520px' }}>
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
+              transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
             >
               <span className="hero-chip">
+                <span
+                  style={{
+                    width: '8px',
+                    height: '8px',
+                    borderRadius: '50%',
+                    background: '#22c55e',
+                    display: 'inline-block',
+                  }}
+                />
                 {heroContent.greeting}
               </span>
             </motion.div>
 
-            {/* Main heading with typing animation */}
-            <h1 className="hero-title mt-4">
+            <motion.h1
+              className="hero-title mt-4"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
+            >
               <TypeAnimation
                 sequence={[
                   "Hi, I'm Sai",
-                  2000,
+                  2500,
                   "",
                   500,
                 ]}
@@ -41,37 +51,67 @@ const Hero = () => {
                 cursor={true}
                 repeat={Infinity}
               />
-            </h1>
+            </motion.h1>
 
-            {/* Description */}
             <motion.p
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.6 }}
+              transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
               className="hero-description mt-4"
             >
               {heroContent.description}
             </motion.p>
 
-            {/* CTA Buttons */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.8 }}
-              className="d-flex flex-wrap gap-3 align-items-center mt-4"
+              transition={{ duration: 0.8, delay: 0.8, ease: "easeOut" }}
+              className="d-flex flex-wrap gap-3 align-items-center mt-5"
             >
-              <a href="#contact" className="btn-primary-custom text-decoration-none">
-                Contact Me
-              </a>
-              <a href="#projects" className="hero-link">
-                Explore My Work →
-              </a>
+              <motion.a
+                href="#contact"
+                className="btn-primary-custom text-decoration-none"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <span>Contact Me</span>
+              </motion.a>
+              <motion.a
+                href="#projects"
+                className="hero-link"
+                whileHover={{ x: 4 }}
+              >
+                Explore My Work
+                <motion.span
+                  animate={{ x: [0, 4, 0] }}
+                  transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                >
+                  &rarr;
+                </motion.span>
+              </motion.a>
             </motion.div>
-
           </div>
         </Container>
       </div>
 
+      <motion.div
+        className="scroll-indicator"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1.2, duration: 0.6 }}
+      >
+        <motion.div
+          className="scroll-mouse"
+          animate={{ y: [0, 8, 0] }}
+          transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <motion.div
+            className="scroll-dot"
+            animate={{ opacity: [1, 0.3, 1], y: [0, 6, 0] }}
+            transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+          />
+        </motion.div>
+      </motion.div>
     </section>
   );
 };
