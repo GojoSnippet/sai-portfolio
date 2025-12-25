@@ -279,31 +279,20 @@ const Projects = () => {
           >
             ACHIEVEMENTS
           </motion.p>
-          <motion.h2
-            className="mb-4"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2, duration: 0.6 }}
-            viewport={{ once: true }}
-            style={{
-              fontSize: "clamp(2.5rem, 5vw, 3.5rem)",
-              fontWeight: "800",
-              color: "#0f172a",
-              letterSpacing: "-0.03em",
-            }}
-          >
-            PROJECTS
-          </motion.h2>
+          <h2 className="section-title mb-3">
+            My <span className="text-gradient">Projects</span>
+          </h2>
+          <div className="section-divider" />
           <motion.p
-            className="mx-auto mb-5"
+            className="mx-auto mb-5 mt-4"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.6 }}
             viewport={{ once: true }}
             style={{
               maxWidth: "48rem",
-              color: "#475569",
-              fontSize: "1.1rem",
+              color: "#94a3b8",
+              fontSize: "1.05rem",
               lineHeight: "1.7",
             }}
           >

@@ -3,6 +3,7 @@ import {
   Hero,
   Skills,
   About,
+  Education,
   Experience,
   Projects,
   Contact,
@@ -14,10 +15,11 @@ function App() {
     <div className="relative z-0 bg-slate-900">
       <Navbar />
       <Hero />
-      <Skills />
       <About />
-      <Projects />
+      <Education />
       <Experience />
+      <Skills />
+      <Projects />
       <Contact />
       <Footer />
     </div>

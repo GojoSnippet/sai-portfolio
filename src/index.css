@@ -134,7 +134,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .bg-gradient-slate {
-  background: var(--slate-100);
+  background: linear-gradient(180deg, #0a1628 0%, #0f172a 50%, #0a1628 100%);
 }
 
 .bg-gradient-slate-reverse {
@@ -702,7 +702,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .about-section {
-  background: linear-gradient(180deg, var(--primary-500) 0%, var(--slate-900) 100%);
+  background: linear-gradient(180deg, rgba(14, 165, 233, 0.03) 0%, var(--slate-900) 100%);
   padding: 5rem 0;
   min-height: 600px;
 }
@@ -723,7 +723,9 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .about-zoozoo-pusher {
-  display: none;
+  width: 100%;
+  height: 400px;
+  position: relative;
 }
 
 @media (min-width: 992px) {
@@ -736,41 +738,19 @@ h1, h2, h3, h4, h5, h6 {
   }
 
   .about-content-container {
-    flex: 0 0 auto;
-    width: 55%;
+    flex: 1;
+    max-width: 1200px;
   }
 
   .about-zoozoo-pusher {
-    display: flex;
-    align-items: center;
-    width: 450px;
-    height: 500px;
-    flex-shrink: 0;
-    margin-left: -320px;
+    width: 100%;
+    height: 450px;
   }
 }
 
 @media (min-width: 1200px) {
-  .about-content-container {
-    width: 52%;
-  }
-
   .about-zoozoo-pusher {
-    width: 500px;
-    height: 540px;
-    margin-left: -300px;
-  }
-}
-
-@media (min-width: 1400px) {
-  .about-content-container {
-    width: 50%;
-  }
-
-  .about-zoozoo-pusher {
-    width: 550px;
-    height: 580px;
-    margin-left: -280px;
+    height: 500px;
   }
 }
 
