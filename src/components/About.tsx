@@ -27,31 +27,15 @@ const About = () => {
             <div className="section-divider" />
           </div>
 
-          <Row className="g-5 align-items-start">
+          <Row className="justify-content-center">
             {/* Description */}
-            <Col lg={6}>
+            <Col lg={10} xl={8}>
               <div>
                 {aboutContent.description.split("\n\n").map((paragraph, index) => (
-                  <p key={index} className="text-gray-300 fs-5 lh-lg mb-4">
+                  <p key={index} className="text-gray-300 fs-5 lh-lg mb-4 text-center">
                     {paragraph.trim()}
                   </p>
                 ))}
-              </div>
-            </Col>
-
-            {/* Skills */}
-            <Col lg={6}>
-              <div>
-                <h3 className="text-white fs-4 fw-semibold mb-4">
-                  Technologies I work with
-                </h3>
-                <div className="d-flex flex-wrap gap-2">
-                  {aboutContent.skills.map((skill) => (
-                    <span key={skill} className="skill-badge">
-                      {skill}
-                    </span>
-                  ))}
-                </div>
               </div>
             </Col>
           </Row>

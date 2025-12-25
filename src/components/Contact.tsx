@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { motion } from "framer-motion";
-import { Container, Row, Col, Form, Button } from "react-bootstrap";
+import { Container, Row, Col, Form } from "react-bootstrap";
 import { contactContent, socialLinks } from "../constants";
 
 const Contact = () => {
@@ -31,6 +31,12 @@ const Contact = () => {
     setForm({ name: "", email: "", message: "" });
 
     setTimeout(() => setSuccess(false), 3000);
+  };
+
+  const getButtonText = () => {
+    if (loading) return "Sending...";
+    if (success) return "Message Sent!";
+    return "Send Message";
   };
 
   return (
@@ -192,13 +198,13 @@ const Contact = () => {
                   />
                 </Form.Group>
 
-                <Button
+                <button
                   type="submit"
                   disabled={loading}
-                  className="btn-indigo w-100"
+                  className="btn btn-indigo w-100"
                 >
-                  {loading ? "Sending..." : success ? "Message Sent!" : "Send Message"}
-                </Button>
+                  {getButtonText()}
+                </button>
               </Form>
             </motion.div>
           </Col>
