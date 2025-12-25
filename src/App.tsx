@@ -15,10 +15,10 @@ function App() {
     <div className="relative z-0 bg-slate-900">
       <Navbar />
       <Hero />
+      <Skills />
       <About />
       <Education />
       <Experience />
-      <Skills />
       <Projects />
       <Contact />
       <Footer />
