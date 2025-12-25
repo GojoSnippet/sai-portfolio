@@ -19,7 +19,10 @@ const Navbar = () => {
                 window.scrollTo(0, 0);
               }}
             >
-              sai kumar
+              <span className="logo-wrapper">
+                <span className="logo-text">SK</span>
+                <span className="logo-dot"></span>
+              </span>
             </a>
 
             {/* Desktop Navigation - hidden on mobile */}
